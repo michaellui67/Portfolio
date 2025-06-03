@@ -39,26 +39,17 @@ export const education = [
     duration: "<b>2019 - 2023</b>",
     subtitle: "Universitas Brawijaya",
     details: [],
-    tags: [
-      "Artificial Intelligence",
-      "Data Science",
-      "Data Structures & Algorithms",
-      "Database Management System",
-      "Operating Systems",
-      "Cybersecurity",
-      "Computer Networks",
-      "Human and Computer Interaction",
-    ],
+    tags: [],
     icon: "graduation-cap",
   },
 ];
 
 export const skills = [
-  'General: Python, SQL, NoSQL, Git',
-  'AI & ML: Tensorflow, Keras, PyTorch, HuggingFace, Langchain',
-  'Deployment: Amazon Web Service (AWS), Google Cloud Platform (GCP), Microsoft Azure, Docker',
-  'Data Analysis: Microsoft Excel, R, Tableau, Power BI.',
-  'Language: Bahasa Indonesia (Native), English (C1), German (B2)'
+  'AI & ML: Tensorflow, Keras, PyTorch, HuggingFace, Langchain, Gradio',
+  'Cloud: Amazon Web Service (AWS), Google Cloud Platform (GCP), Microsoft Azure, IBM watsonx',
+  'Data Analysis: Microsoft Excel, Python, R, Tableau, Power BI.',
+  'Other: HTML, CSS, Javascript, SQL, NoSQL, Git, Docker',
+  'Language: English (C1), German (B2), Bahasa Indonesia (Native)'
 ];
 
 export const footer = [
