@@ -23,7 +23,6 @@ A modern, responsive personal portfolio website built with HTML, CSS, and JavaSc
 - **jQuery Waypoints**: Scroll animations
 - **Bootstrap 3.3.5**: Grid system and responsive components
 - **Font Awesome**: Icons
-- **Google Fonts**: Typography (Montserrat, Open Sans, Raleway)
 
 ## Project Structure
 
