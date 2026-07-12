@@ -1,0 +1,34 @@
+name: Sync CV from Google Doc
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # daily 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync CV data
+        run: node scripts/sync-cv.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -I '"generatedAt"' -- user-data/data.js; then
+            echo "No CV changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add user-data/data.js
+          git commit -m "chore: sync CV data from Google Doc"
+          git push

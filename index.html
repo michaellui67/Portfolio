@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./user-data/data.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -161,109 +162,59 @@
         <div style="border-radius: calc(var(--radius) + 4px); border: 1px solid hsl(var(--border)); background: hsl(var(--card)); color: hsl(var(--card-foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);">
           <sc-if value="{{ tabIsWork }}" hint-placeholder-val="{{ true }}">
             <ul style="list-style: none; margin: 0 0 0 2.5rem; padding: 0; border-left: 1px solid hsl(var(--border));">
-
-              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
-                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
-                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">A</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Avicenna Ambulance</h2>
-                  <div>
-                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
-                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Automation Engineer</p>
-                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">May 2026 - Now</time>
-                    </div>
-                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
-                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Designed workflow using n8n in to automate: streamlining the company process and reducing cost.
-                        <ul style="margin: 0.15rem 0 0 1rem; padding: 0; list-style: circle outside;">
-                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">SMS notification</li>
-                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">GDPR-compliant medical data OCR</li>
-                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Error detection in data entry</li>
-                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">KPIs measurement</li>
-                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Petrol station price optimization</li>
-                        </ul>
-                      </li>
-                    </ul>
+              <sc-for list="{{ cvWork }}" as="job" hint-placeholder-count="3">
+                <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                  <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                    <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">{{ job.initial }}</div>
                   </div>
-                </div>
-              </li>
-
-              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
-                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
-                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">F</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Freelancer</h2>
-                  <div>
-                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
-                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Independent Projects</p>
-                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Jan 2023 - Mar 2026</time>
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">{{ job.company }}</h2>
+                    <div>
+                      <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                        <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">{{ job.role }}</p>
+                        <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">{{ job.date }}</time>
+                      </div>
+                      <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                        <sc-for list="{{ job.bullets }}" as="bullet" hint-placeholder-count="2">
+                          <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">{{ bullet.text }}
+                            <ul style="margin: 0.15rem 0 0 1rem; padding: 0; list-style: circle outside;">
+                              <sc-for list="{{ bullet.subs }}" as="sub" hint-placeholder-count="0">
+                                <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">{{ sub }}</li>
+                              </sc-for>
+                            </ul>
+                          </li>
+                        </sc-for>
+                      </ul>
                     </div>
-                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
-                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Designed a Telegram chatbot in Python integrating LLM with Tavily API, enabling news summarization and financial analysis, deployed on Railway.</li>
-                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Developed an AI-driven content creation pipeline for dynamic video generation, built with Python, LangChain and the OpenAI API, integrated with RunwayML and FFmpeg, deployed on AWS Lambda with scheduling via Apache Airflow.</li>
-                    </ul>
                   </div>
-                </div>
-              </li>
-
-              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
-                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
-                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">M</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Ministry of Communication and Digital Affairs</h2>
-                  <div>
-                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
-                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Web Developer Intern</p>
-                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Jul 2022 - Dec 2022</time>
-                    </div>
-                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
-                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Maintained and improved a content management system (CMS) for public facility digital platforms by collaborating in weekly sprints in a Scrum-based Agile team.</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
+                </li>
+              </sc-for>
             </ul>
           </sc-if>
 
           <sc-if value="{{ tabIsEducation }}" hint-placeholder-val="{{ false }}">
             <ul style="list-style: none; margin: 0 0 0 2.5rem; padding: 0; border-left: 1px solid hsl(var(--border));">
-
-              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
-                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
-                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">D</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Dresden University of Technology, Germany</h2>
-                  <div>
-                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
-                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Currently pursuing Master in Computer Science</p>
-                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Apr 2026 - Present</time>
+              <sc-for list="{{ cvEducation }}" as="edu" hint-placeholder-count="2">
+                <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                  <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                    <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">{{ edu.initial }}</div>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">{{ edu.school }}</h2>
+                    <div>
+                      <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                        <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">{{ edu.degree }}</p>
+                        <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">{{ edu.date }}</time>
+                      </div>
+                      <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                        <sc-for list="{{ edu.bullets }}" as="bullet" hint-placeholder-count="0">
+                          <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">{{ bullet.text }}</li>
+                        </sc-for>
+                      </ul>
                     </div>
                   </div>
-                </div>
-              </li>
-
-              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
-                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
-                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">B</div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Brawijaya University, Indonesia</h2>
-                  <div>
-                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
-                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Graduated with Bachelor in Informatics</p>
-                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Aug 2019 - Jan 2023</time>
-                    </div>
-                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
-                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Thesis: Generative Image for Data Augmentation</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
+                </li>
+              </sc-for>
             </ul>
           </sc-if>
         </div>
@@ -343,54 +294,16 @@
       <section id="skills" data-screen-label="Skills" style="display: flex; flex-direction: column; gap: 2rem;">
         <h2 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 1.875rem; line-height: 1.2; letter-spacing: 0.025em;">skills</h2>
         <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Programming Language</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Python</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">HTML</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">CSS</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Javascript</span>
+          <sc-for list="{{ cvSkills }}" as="group" hint-placeholder-count="5">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">{{ group.category }}</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+                <sc-for list="{{ group.items }}" as="item" hint-placeholder-count="4">
+                  <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">{{ item }}</span>
+                </sc-for>
+              </div>
             </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Library</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">NumPy</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">pandas</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">scikit-learn</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">TensorFlow</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Keras</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">PyTorch</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">LangChain</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Database</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MySQL</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">PostgreSQL</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MongoDB</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">SQL Server</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Other</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MS Office (Word, Excel, PowerPoint)</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">AI Studio</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">n8n</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Git</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Docker</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Language</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">English (C1)</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">German (B2)</span>
-              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Indonesian (Native)</span>
-            </div>
-          </div>
+          </sc-for>
         </div>
       </section>
 
@@ -453,6 +366,8 @@
   &quot;defaultTheme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;system&quot;, &quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;system&quot;, &quot;tsType&quot;: &quot;\&quot;system\&quot; | \&quot;light\&quot; | \&quot;dark\&quot;&quot;, &quot;section&quot;: &quot;Appearance&quot; },
   &quot;photoStyle&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;photo card&quot;, &quot;round avatar&quot;], &quot;default&quot;: &quot;photo card&quot;, &quot;tsType&quot;: &quot;\&quot;photo card\&quot; | \&quot;round avatar\&quot;&quot;, &quot;section&quot;: &quot;Appearance&quot; }
 }">
+const CV = (typeof window !== "undefined" && window.CV_DATA) || { work: [], education: [], skills: [] };
+
 class Component extends DCLogic {
   state = {
     dark: false,
@@ -549,6 +464,9 @@ class Component extends DCLogic {
       openChatFromLink: (e) => { e.preventDefault(); this.setState({ chatOpen: true }); },
       photoIsCard: photoStyle === "photo card",
       photoIsAvatar: photoStyle !== "photo card",
+      cvWork: CV.work || [],
+      cvEducation: CV.education || [],
+      cvSkills: CV.skills || [],
       repos: this.state.repos,
       posts: this.state.posts,
       hasPosts: this.state.posts.length > 0,
