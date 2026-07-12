@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Calistoga&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 224 71.4% 4.1%;
+      --card: 0 0% 100%;
+      --card-foreground: 224 71.4% 4.1%;
+      --primary: 220.9 39.3% 11%;
+      --primary-foreground: 210 20% 98%;
+      --secondary: 220 14.3% 95.9%;
+      --secondary-foreground: 220.9 39.3% 11%;
+      --muted: 220 14.3% 95.9%;
+      --muted-foreground: 220 8.9% 46.1%;
+      --accent: 220 14.3% 95.9%;
+      --accent-foreground: 220.9 39.3% 11%;
+      --border: 220 13% 91%;
+      --input: 220 13% 91%;
+      --radius: 0.5rem;
+    }
+    .dark {
+      --background: 224 71.4% 4.1%;
+      --foreground: 210 20% 98%;
+      --card: 224 71.4% 4.1%;
+      --card-foreground: 210 20% 98%;
+      --primary: 210 20% 98%;
+      --primary-foreground: 220.9 39.3% 11%;
+      --secondary: 215 27.9% 16.9%;
+      --secondary-foreground: 210 20% 98%;
+      --muted: 215 27.9% 16.9%;
+      --muted-foreground: 217.9 10.6% 64.9%;
+      --accent: 215 27.9% 16.9%;
+      --accent-foreground: 210 20% 98%;
+      --border: 215 27.9% 16.9%;
+      --input: 215 27.9% 16.9%;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: hsl(var(--background));
+      color: hsl(var(--foreground));
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    a:hover { color: hsl(var(--foreground)); }
+    button { font-family: inherit; }
+    @keyframes tw-bounce {
+      0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+      50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    }
+    @keyframes tw-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; background: hsl(var(--background)); color: hsl(var(--foreground)); font-size: 16px; line-height: 1.5;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: hsl(var(--background) / 0.75); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+    <div style="max-width: 48rem; margin: 0 auto; padding: 1.5rem 2rem;">
+      <nav style="display: flex; align-items: center; justify-content: space-between;">
+        <ul style="display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0;">
+          <li><a href="#home" title="Portfolio overview" style="text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">home</a></li>
+          <li><a href="#projects" title="Top repositories" style="text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">projects</a></li>
+          <li><a href="#blog" title="Recent posts" style="text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">blog</a></li>
+          <li><a href="#contact" title="Get in touch" style="text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">contact</a></li>
+        </ul>
+        <div style="display: flex; gap: 1rem;">
+          <button onClick="{{ toggleChat }}" aria-label="Chat toggle" title="Chat with MyCV-RAG" style="display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border: none; border-radius: calc(var(--radius) - 2px); background: transparent; color: hsl(var(--foreground)); cursor: pointer; transition: background 0.15s;" style-hover="background: hsl(var(--accent));">
+            <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.67 8H18a2 2 0 0 1 2 2v4.33"></path><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M22 22 2 2"></path><path d="M8 8H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 1.414-.586"></path><path d="M9 13v2"></path><path d="M9.67 4H12v2.33"></path></svg>
+            </sc-if>
+            <sc-if value="{{ chatClosed }}" hint-placeholder-val="{{ true }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+            </sc-if>
+          </button>
+          <button onClick="{{ toggleTheme }}" aria-label="Theme toggle" style="display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border: none; border-radius: calc(var(--radius) - 2px); background: transparent; cursor: pointer; transition: background 0.15s;" style-hover="background: hsl(var(--accent));">
+            <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fdba74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+            </sc-if>
+            <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </sc-if>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div style="max-width: 48rem; margin: 0 auto; padding: 0 2rem;">
+    <article style="margin-top: 2rem; display: flex; flex-direction: column; gap: 4rem; padding-bottom: 4rem;">
+
+      <section id="home" data-screen-label="Hero" style="display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between; gap: 2rem;">
+        <div style="margin-right: 2rem; flex-shrink: 0;">
+          <sc-if value="{{ photoIsCard }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 175px; height: 233px; border-radius: var(--radius); overflow: hidden; background: hsl(var(--secondary)); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);">
+              <img src="img/michael.png" alt="Photo of Michael" width="175" height="233" style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; user-select: none; opacity: 1">
+            </div>
+          </sc-if>
+          <sc-if value="{{ photoIsAvatar }}" hint-placeholder-val="{{ false }}">
+            <img src="img/michael.png" alt="Photo of Michael" width="144" height="144" style="width: 9rem; height: 9rem; border-radius: 50%; border: 1px solid hsl(var(--border)); object-fit: cover; object-position: top; background: hsl(var(--secondary)); display: block;">
+          </sc-if>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+          <h1 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 3rem; line-height: 1.1; letter-spacing: 0.025em; text-wrap: balance;">Hello, I'm Michael😎</h1>
+          <p style="margin: 0.5rem 0 0; font-size: 1rem; font-weight: 500; white-space: nowrap;">a Student in Dresden, Germany 🇩🇪</p>
+          <p style="margin: 1rem 0 0; max-width: 24rem; font-size: 1rem; text-wrap: balance;">I build automation workflows, AI/ML applications and data-driven products.</p>
+
+          <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 0.25rem;">
+            <p style="margin: 0; font-size: 1rem; font-weight: 600; text-wrap: balance;">For CV Q&amp;A, start a chat with <a href="#" onClick="{{ openChatFromLink }}" style="text-decoration: none;">Michael Bot</a></p>
+            <svg style="animation: tw-bounce 1s infinite;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 7 10 10"></path><path d="M17 7v10H7"></path></svg>
+          </div>
+          <p style="margin: 0.25rem 0 0; font-size: 0.75rem; font-weight: 300;">alternatively, you can&nbsp;<a href="mailto:michael.lui67@gmail.com" title="michael.lui67@gmail.com" class="scp0" style="font-weight: 600; text-decoration: underline; text-underline-offset: 3px; color: hsl(var(--muted-foreground)); transition: color 0.15s;">email me</a>&nbsp;instead.</p>
+
+          <section style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;">
+            <a href="https://docs.google.com/document/d/1IWPNyDfCLuRszsdUY09tJYt3xaivlXK0xBblbmBd8Co/edit?usp=sharing" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; height: 2.25rem; padding: 0 1rem; border-radius: calc(var(--radius) - 2px); border: 1px solid hsl(var(--input)); background: hsl(var(--background)); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); color: hsl(var(--foreground)); font-size: 0.875rem; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background 0.15s;" style-hover="background: hsl(var(--accent));">
+              <span style="font-weight: 600;">Resume</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
+            </a>
+            <section style="display: flex; gap: 1.5rem;">
+              <a href="https://www.linkedin.com/in/michael-stephen-lui-0a57311a6/" target="_blank" rel="noopener noreferrer" title="LinkedIn" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+              <a href="https://github.com/michaellui67" target="_blank" rel="noopener noreferrer" title="GitHub" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+              </a>
+              <a href="mailto:michael.lui67@gmail.com" title="Email" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+              </a>
+            </section>
+          </section>
+        </div>
+      </section>
+
+      <section id="experience" data-screen-label="Experience">
+        <div role="tablist" style="display: grid; grid-template-columns: 1fr 1fr; width: 100%; height: 2.25rem; align-items: center; border-radius: var(--radius); background: hsl(var(--muted)); padding: 0.25rem; box-sizing: border-box; margin-bottom: 0.5rem;">
+          <sc-if value="{{ tabIsWork }}" hint-placeholder-val="{{ true }}">
+            <button role="tab" aria-selected="true" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border: none; border-radius: calc(var(--radius) - 2px); padding: 0.25rem 0.75rem; font-size: 0.875rem; font-weight: 500; background: hsl(var(--background)); color: hsl(var(--foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); cursor: pointer;">Work</button>
+            <button role="tab" aria-selected="false" onClick="{{ showEducation }}" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border: none; border-radius: calc(var(--radius) - 2px); padding: 0.25rem 0.75rem; font-size: 0.875rem; font-weight: 500; background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer;">Education</button>
+          </sc-if>
+          <sc-if value="{{ tabIsEducation }}" hint-placeholder-val="{{ false }}">
+            <button role="tab" aria-selected="false" onClick="{{ showWork }}" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border: none; border-radius: calc(var(--radius) - 2px); padding: 0.25rem 0.75rem; font-size: 0.875rem; font-weight: 500; background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer;">Work</button>
+            <button role="tab" aria-selected="true" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border: none; border-radius: calc(var(--radius) - 2px); padding: 0.25rem 0.75rem; font-size: 0.875rem; font-weight: 500; background: hsl(var(--background)); color: hsl(var(--foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); cursor: pointer;">Education</button>
+          </sc-if>
+        </div>
+
+        <div style="border-radius: calc(var(--radius) + 4px); border: 1px solid hsl(var(--border)); background: hsl(var(--card)); color: hsl(var(--card-foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);">
+          <sc-if value="{{ tabIsWork }}" hint-placeholder-val="{{ true }}">
+            <ul style="list-style: none; margin: 0 0 0 2.5rem; padding: 0; border-left: 1px solid hsl(var(--border));">
+
+              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">A</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Avicenna Ambulance</h2>
+                  <div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Automation Engineer</p>
+                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">May 2026 - Now</time>
+                    </div>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Designed workflow using n8n in to automate: streamlining the company process and reducing cost.
+                        <ul style="margin: 0.15rem 0 0 1rem; padding: 0; list-style: circle outside;">
+                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">SMS notification</li>
+                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">GDPR-compliant medical data OCR</li>
+                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Error detection in data entry</li>
+                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">KPIs measurement</li>
+                          <li style="font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Petrol station price optimization</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">F</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Freelancer</h2>
+                  <div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Independent Projects</p>
+                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Jan 2023 - Mar 2026</time>
+                    </div>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Designed a Telegram chatbot in Python integrating LLM with Tavily API, enabling news summarization and financial analysis, deployed on Railway.</li>
+                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Developed an AI-driven content creation pipeline for dynamic video generation, built with Python, LangChain and the OpenAI API, integrated with RunwayML and FFmpeg, deployed on AWS Lambda with scheduling via Apache Airflow.</li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">M</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Ministry of Communication and Digital Affairs</h2>
+                  <div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Web Developer Intern</p>
+                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Jul 2022 - Dec 2022</time>
+                    </div>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Maintained and improved a content management system (CMS) for public facility digital platforms by collaborating in weekly sprints in a Scrum-based Agile team.</li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </sc-if>
+
+          <sc-if value="{{ tabIsEducation }}" hint-placeholder-val="{{ false }}">
+            <ul style="list-style: none; margin: 0 0 0 2.5rem; padding: 0; border-left: 1px solid hsl(var(--border));">
+
+              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">D</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Dresden University of Technology, Germany</h2>
+                  <div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Currently pursuing Master in Computer Science</p>
+                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Apr 2026 - Present</time>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li style="position: relative; margin-left: 2.5rem; padding: 1rem 0;">
+                <div style="position: absolute; left: -4rem; top: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white;">
+                  <div style="width: 3rem; height: 3rem; border-radius: 50%; border: 1px solid hsl(var(--border)); background: hsl(var(--muted)); color: hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1.1rem;">B</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <h2 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1;">Brawijaya University, Indonesia</h2>
+                  <div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem;">
+                      <p style="margin: 0; font-size: 0.875rem; font-weight: 500; line-height: 1; color: hsl(var(--muted-foreground));">Graduated with Bachelor in Informatics</p>
+                      <time style="white-space: nowrap; padding-right: 2rem; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground));">Aug 2019 - Jan 2023</time>
+                    </div>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding: 0; list-style: disc outside;">
+                      <li style="padding-right: 2rem; font-size: 0.875rem; line-height: 1.75; color: hsl(var(--foreground) / 0.9);">Thesis: Generative Image for Data Augmentation</li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </sc-if>
+        </div>
+      </section>
+
+      <section id="projects" data-screen-label="Top repositories" style="display: flex; flex-direction: column; gap: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h2 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 1.875rem; line-height: 1.2; letter-spacing: 0.025em;">top repositories</h2>
+          <a href="https://github.com/michaellui67" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 300; text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+            <span>view more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <sc-for list="{{ repos }}" as="repo" hint-placeholder-count="6">
+            <a href="{{ repo.url }}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; border-radius: calc(var(--radius) + 4px); border: 1px solid hsl(var(--border)); background: hsl(var(--card)); color: hsl(var(--card-foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); text-decoration: none; transition: background 0.15s;" style-hover="background: hsl(var(--muted) / 0.3);">
+              <h3 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1; letter-spacing: -0.01em;">{{ repo.name }}</h3>
+              <p style="margin: 0; flex: 1; font-size: 0.75rem; line-height: 1.6; color: hsl(var(--muted-foreground)); text-wrap: pretty;">{{ repo.description }}</p>
+              <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));">
+                <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><i style="width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; background: {{ repo.languageColor }};"></i>{{ repo.language }}</span>
+                <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>{{ repo.stars }}</span>
+                <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path><path d="M12 12v3"></path></svg>{{ repo.forks }}</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+      <section id="blog" data-screen-label="Recent posts" style="display: flex; flex-direction: column; gap: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <h2 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 1.875rem; line-height: 1.2; letter-spacing: 0.025em;">recent posts</h2>
+          <a href="https://medium.com/@michael.lui67" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 300; text-decoration: none; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+            <span>view more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <sc-if value="{{ hasPosts }}" hint-placeholder-val="{{ true }}">
+          <div style="border-radius: calc(var(--radius) + 4px); border: 1px solid hsl(var(--border)); background: hsl(var(--card)); color: hsl(var(--card-foreground)); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); overflow: hidden;">
+            <ul style="list-style: none; margin: 0; padding: 0;">
+              <sc-for list="{{ posts }}" as="post" hint-placeholder-count="2">
+                <li style="border-top: 1px solid hsl(var(--border)); margin-top: -1px;">
+                  <a href="{{ post.link }}" target="_blank" rel="noopener" style="display: block; text-decoration: none; color: inherit;">
+                    <article style="padding: 1.5rem; transition: background 0.15s;" style-hover="background: hsl(var(--muted) / 0.3);">
+                      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;">
+                        <div style="min-width: 0; flex: 1;">
+                          <h3 style="margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ post.title }}</h3>
+                          <p style="margin: 0 0 0.75rem; font-size: 0.875rem; line-height: 1.6; color: hsl(var(--muted-foreground)); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ post.summary }}</p>
+                          <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; min-height: 1.5rem;">
+                            <sc-for list="{{ post.tags }}" as="tag" hint-placeholder-count="3">
+                              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 500; line-height: 1;">{{ tag }}</span>
+                            </sc-for>
+                          </div>
+                        </div>
+                        <div style="display: flex; flex-shrink: 0; flex-direction: column; align-items: flex-end; gap: 0.5rem; font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                          <div style="display: flex; align-items: center; gap: 0.375rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                            <span style="white-space: nowrap;">{{ post.date }}</span>
+                          </div>
+                          <div style="display: flex; align-items: center; gap: 0.375rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <span style="white-space: nowrap;">{{ post.readTime }} read</span>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  </a>
+                </li>
+              </sc-for>
+            </ul>
+          </div>
+        </sc-if>
+        <sc-if value="{{ postsFailed }}" hint-placeholder-val="{{ false }}">
+          <p style="margin: 0; color: hsl(var(--muted-foreground));">Could not load posts right now — read them on <a href="https://medium.com/@michael.lui67" target="_blank" rel="noopener" style="color: hsl(var(--muted-foreground)); text-decoration: underline; text-underline-offset: 3px;" style-hover="color: hsl(var(--foreground));">Medium</a>.</p>
+        </sc-if>
+      </section>
+
+      <section id="skills" data-screen-label="Skills" style="display: flex; flex-direction: column; gap: 2rem;">
+        <h2 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 1.875rem; line-height: 1.2; letter-spacing: 0.025em;">skills</h2>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Programming Language</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Python</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">HTML</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">CSS</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Javascript</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Library</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">NumPy</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">pandas</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">scikit-learn</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">TensorFlow</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Keras</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">PyTorch</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">LangChain</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Database</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MySQL</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">PostgreSQL</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MongoDB</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">SQL Server</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Other</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">MS Office (Word, Excel, PowerPoint)</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">AI Studio</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">n8n</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Git</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Docker</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <h3 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: hsl(var(--muted-foreground));">Language</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">English (C1)</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">German (B2)</span>
+              <span style="display: inline-flex; align-items: center; border-radius: calc(var(--radius) - 2px); border: 1px solid transparent; background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; line-height: 1.4;">Indonesian (Native)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" data-screen-label="Contact" style="display: flex; flex-direction: column; gap: 2rem;">
+        <h2 style="margin: 0; font-family: 'Calistoga', serif; font-weight: 400; font-size: 1.875rem; line-height: 1.2; letter-spacing: 0.025em;">get in touch</h2>
+        <p style="margin: 0; color: hsl(var(--muted-foreground)); text-wrap: pretty;">Feel free to email me at <a href="mailto:michael.lui67@gmail.com" class="scp0" style="font-weight: 600; text-decoration: underline; text-underline-offset: 3px; color: hsl(var(--muted-foreground)); transition: color 0.15s;">michael.lui67@gmail.com</a> for tech discussions, opportunities, or just to say hello.</p>
+      </section>
+
+    </article>
+  </div>
+
+  <footer data-screen-label="Footer" style="width: 100%; padding-top: 3rem;">
+    <div style="max-width: 48rem; margin: 0 auto; display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between; padding: 0 2rem 4rem;">
+      <section style="display: flex; gap: 1.5rem;">
+        <a href="https://www.linkedin.com/in/michael-stephen-lui-0a57311a6/" target="_blank" rel="noopener noreferrer" title="LinkedIn" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        </a>
+        <a href="https://github.com/michaellui67" target="_blank" rel="noopener noreferrer" title="GitHub" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+        </a>
+        <a href="mailto:michael.lui67@gmail.com" title="Email" style="display: inline-flex; color: hsl(var(--muted-foreground)); transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        </a>
+      </section>
+      <section>
+        <p style="margin: 0; font-size: 0.75rem; color: hsl(var(--muted-foreground));">© {{ year }} <a href="#home" style="color: hsl(var(--muted-foreground)); text-decoration: none; transition: color 0.15s;" style-hover="color: hsl(var(--foreground));">michaellui67.github.io</a></p>
+      </section>
+    </div>
+  </footer>
+
+  <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Chat panel" style="position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 60; width: min(24rem, calc(100vw - 2.5rem)); height: 32rem; display: flex; flex-direction: column; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius) + 4px); background: hsl(var(--card)); color: hsl(var(--card-foreground)); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); overflow: hidden;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 1px solid hsl(var(--border));">
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+          <p style="margin: 0; font-size: 0.75rem;">Chat with</p>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #10b981; animation: tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;"></span>
+            <p style="margin: 0; font-size: 0.875rem; font-weight: 500;">MyCV-RAG</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <a href="https://huggingface.co/spaces/michaellui/MyCV-RAG" target="_blank" rel="noopener" title="Open on Hugging Face" style="display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: calc(var(--radius) - 2px); color: hsl(var(--muted-foreground)); transition: color 0.15s, background 0.15s;" style-hover="color: hsl(var(--foreground)); background: hsl(var(--accent));">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+          </a>
+          <button onClick="{{ toggleChat }}" aria-label="Close chat" style="display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: none; border-radius: calc(var(--radius) - 2px); background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer; transition: color 0.15s, background 0.15s;" style-hover="color: hsl(var(--foreground)); background: hsl(var(--accent));">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+      <div style="flex: 1; position: relative; background: hsl(var(--background));">
+        <p style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; padding: 1rem; text-align: center; font-size: 0.85rem; color: hsl(var(--muted-foreground));">Loading MyCV-RAG…</p>
+        <iframe src="https://michaellui-mycv-rag.hf.space" title="MyCV-RAG chatbot" style="position: relative; width: 100%; height: 100%; border: none;"></iframe>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;defaultTheme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;system&quot;, &quot;light&quot;, &quot;dark&quot;], &quot;default&quot;: &quot;system&quot;, &quot;tsType&quot;: &quot;\&quot;system\&quot; | \&quot;light\&quot; | \&quot;dark\&quot;&quot;, &quot;section&quot;: &quot;Appearance&quot; },
+  &quot;photoStyle&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;photo card&quot;, &quot;round avatar&quot;], &quot;default&quot;: &quot;photo card&quot;, &quot;tsType&quot;: &quot;\&quot;photo card\&quot; | \&quot;round avatar\&quot;&quot;, &quot;section&quot;: &quot;Appearance&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    dark: false,
+    tab: "work",
+    chatOpen: false,
+    repos: [
+      { name: "jejak-nusantara", url: "https://github.com/michaellui67/jejak-nusantara", description: "A Web-App that gamifies tourism in Indonesia through a digital stamp collection mechanic.", language: "JavaScript", languageColor: "#f1e05a", stars: 0, forks: 0 },
+      { name: "FinNewsBot", url: "https://github.com/michaellui67/FinNewsBot", description: "A Telegram bot that delivers financial news about stocks and cryptocurrencies using Hugging Face LLM models and Tavily web search.", language: "Python", languageColor: "#3572A5", stars: 0, forks: 0 },
+      { name: "MyCV-RAG", url: "https://github.com/michaellui67/MyCV-RAG", description: "A RAG application that allows users to ask questions about a CV, using IBM Watsonx AI models.", language: "Python", languageColor: "#3572A5", stars: 0, forks: 0 },
+      { name: "Ethereum-Price-Analysis", url: "https://github.com/michaellui67/Ethereum-Price-Analysis", description: "ETH Explanatory Data Analysis and Price Prediction using LSTM", language: "Jupyter Notebook", languageColor: "#DA5B0B", stars: 0, forks: 0 },
+      { name: "Excel-Sales-Dashboard", url: "https://github.com/michaellui67/Excel-Sales-Dashboard", description: "Interactive sales dashboard built in Excel.", language: "Excel", languageColor: "#217346", stars: 0, forks: 0 },
+      { name: "Portfolio", url: "https://github.com/michaellui67/Portfolio", description: "Personal portfolio — minimal design, built with plain HTML, CSS and JavaScript.", language: "JavaScript", languageColor: "#f1e05a", stars: 0, forks: 0 }
+    ],
+    posts: [],
+    postsFailed: false
+  };
+
+  componentDidMount() {
+    // Theme
+    const pref = this.props.defaultTheme ?? "system";
+    let dark;
+    try {
+      const stored = localStorage.getItem("mp-theme");
+      if (stored) dark = stored === "dark";
+    } catch (e) {}
+    if (dark === undefined) {
+      dark = pref === "dark" ? true : pref === "light" ? false : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    this.applyTheme(dark);
+
+    // Live pinned repos
+    fetch("https://pinned.berrysauce.dev/get/michaellui67")
+      .then((r) => r.json())
+      .then((items) => {
+        if (!Array.isArray(items) || items.length === 0) return;
+        const repos = items.slice(0, 6).map((r) => ({
+          name: r.name,
+          url: "https://github.com/" + r.author + "/" + r.name,
+          description: r.description || "",
+          language: r.language || "",
+          languageColor: r.languageColor || "#8b949e",
+          stars: r.stars ?? 0,
+          forks: r.forks ?? 0
+        }));
+        this.setState({ repos });
+      })
+      .catch(() => {});
+
+    // Medium posts
+    fetch("https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@michael.lui67")
+      .then((r) => r.json())
+      .then((data) => {
+        const items = (data && data.items) || [];
+        if (!items.length) { this.setState({ postsFailed: true }); return; }
+        const posts = items.slice(0, 2).map((item) => {
+          const text = (item.content || "").replace(/<[^>]+>/g, " ");
+          const words = text.trim().split(/\s+/).length;
+          const firstP = /<p>(.*?)<\/p>/.exec(item.content || "");
+          const summary = firstP ? firstP[1].replace(/<[^>]+>/g, "") : "";
+          return {
+            title: item.title,
+            link: item.link,
+            summary,
+            tags: (item.categories || []).slice(0, 3),
+            date: new Date(item.pubDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
+            readTime: Math.max(1, Math.round(words / 200)) + " min"
+          };
+        });
+        this.setState({ posts });
+      })
+      .catch(() => this.setState({ postsFailed: true }));
+  }
+
+  applyTheme(dark) {
+    document.documentElement.classList.toggle("dark", dark);
+    this.setState({ dark });
+    try { localStorage.setItem("mp-theme", dark ? "dark" : "light"); } catch (e) {}
+  }
+
+  renderVals() {
+    const photoStyle = this.props.photoStyle ?? "photo card";
+    return {
+      year: new Date().getFullYear(),
+      isDark: this.state.dark,
+      isLight: !this.state.dark,
+      toggleTheme: () => this.applyTheme(!this.state.dark),
+      tabIsWork: this.state.tab === "work",
+      tabIsEducation: this.state.tab === "education",
+      showWork: () => this.setState({ tab: "work" }),
+      showEducation: () => this.setState({ tab: "education" }),
+      chatOpen: this.state.chatOpen,
+      chatClosed: !this.state.chatOpen,
+      toggleChat: () => this.setState((s) => ({ chatOpen: !s.chatOpen })),
+      openChatFromLink: (e) => { e.preventDefault(); this.setState({ chatOpen: true }); },
+      photoIsCard: photoStyle === "photo card",
+      photoIsAvatar: photoStyle !== "photo card",
+      repos: this.state.repos,
+      posts: this.state.posts,
+      hasPosts: this.state.posts.length > 0,
+      postsFailed: this.state.postsFailed && this.state.posts.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>
